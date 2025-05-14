@@ -61,6 +61,7 @@ spd = hypot(vx,vy);                 % speed magnitude (optional)
 % --- Package outputs ---------------------------------------------------
 pos = [x_traj.'  , y_traj.'];     % N×2   [x  y]
 vel = [vx.'      , vy.'    ];     % N×2   [vx vy]
+vel(Npts,:) = vel(Npts-1,:);      % velocity correction of the last point
 
 R_ref        = norm(pos(1,:) - radar_pos);  % Reference range: distance from radar to the first trajectory point               
 SNR_dB       = -10;                           % Desired receive-SNR (dB) when the target is at the reference range R_ref
@@ -187,7 +188,6 @@ fprintf('Estimated Range   : %.2f m\n', est_range);
 fprintf('Estimated Velocity: %.2f m/s\n', est_velocity);
 
 %% -------------------- Build deskewed 12-element virtual snapshot -----------------
-
 snapshot = zeros(M,1);
 cnt = 1;
 for k_tx = 1:Ntx
