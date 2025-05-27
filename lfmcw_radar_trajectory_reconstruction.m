@@ -134,13 +134,14 @@ for n = 1:N_chirps
             %% ----- steering phase BEFORE noise & 1-bit  ---------------
             geom_phase = exp(1j*2*pi*virt_x*sin(theta_true)/lambda);
             sig = sig .* geom_phase;
-
+            
+            % AWGN
             sig = sig + sqrt(0.5)*(randn(size(sig))+1j*randn(size(sig)));
            
             % Dechirp: mix the received echo with the local Tx chirp to obtain the IF beat signal
             rx_if = conj(sig) .* tx_chirp;
 
-            %% ----- AWGN + 1-bit quantization --------------------------
+            %% ----- 1-bit quantization --------------------------
            
             rx_if_1_bit = csign(rx_if);
 
